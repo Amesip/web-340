@@ -1,0 +1,8 @@
+{
+    "name": "routes",
+    "author": "Mary Barrett",
+    "private": true,
+    "dependencies": {
+        "express": "^4.16.2"
+    }
+}
