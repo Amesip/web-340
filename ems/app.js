@@ -1,4 +1,13 @@
-// required
+
+
+/*
+ Title: Chai Example
+ Author: Richard Krasso
+ Date: 4 13 2018
+ Modified By: Mary Barrett
+ Description: This code is derived from a number of class examples by Professor Krasso.
+
+ */
 
 var mongoose = require("mongoose");
 
