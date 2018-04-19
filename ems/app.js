@@ -21,7 +21,7 @@ var csrf = require("csurf");
 
 // setup csrf protection
 
-var csrfProtection = csrf({cookie: true});
+var csrfProtection = csrf({ cookie: true });
 
 var employee = require("./models/employee");
 
@@ -49,7 +49,7 @@ var db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
 
-db.once("open", function() {
+db.once("open", function () {
 
     console.log("Application connected to mLab MongoDB instance");
 
@@ -71,7 +71,7 @@ app.use(cookieParser());
 
 app.use(csrfProtection);
 
-app.use(function(request, response, next) {
+app.use(function (request, response, next) {
 
     var token = request.csrfToken();
 
@@ -107,7 +107,7 @@ app.get("/", function (request, response) {
 
 // routing
 
-app.get("/new", function(request, response) {
+app.get("/new", function (request, response) {
 
     response.render("new", {
 
@@ -117,67 +117,67 @@ app.get("/new", function(request, response) {
 
 });
 
-app.get("/list", function(request, response) {
-        employee.Employee.find({}, function(error, employees) {
-           if (error) throw error;
-           response.render("list", {
-               title: "Employee List",
-               employees: employees
-           });
-        });
+app.get("/list", function (request, response) {
+    employee.Employee.find({}, function (error, employees) {
+        if (error) throw error;
+        response.render("list", {
+            title: "Employee List",
+            employees: employees
+        });
     });
+});
 
-app.post("/process", function(request, response) {
+app.post("/process", function (request, response) {
 
     // console.log(request.body.txtName);
- 
+
     if (!request.body.txtFName && !request.body.txtLName) {
- 
+
         response.status(400).send("Entries must have a name");
- 
+
         return;
- 
+
     }
- 
+
     // get the request's form data
- 
+
     var firstName = request.body.txtFName;
- 
+
     console.log(firstName);
 
     var lastName = request.body.txtLName;
 
     console.log(lastName);
- 
+
     // create a fruit model
- 
+
     var newEmployee = new employee.Employee({
- 
+
         firstName: firstName,
         lastName: lastName
- 
-    });
- 
-    // save
- 
-    newEmployee.save(function (error) {
- 
-        if (error) throw error;
- 
-        console.log(firstName + lastName + " saved successfully!");
- 
-    });
- 
-    response.redirect("/");
- 
- });
 
- app.get("/view/:firstName-:lastName", function (request, response) {
+    });
+
+    // save
+
+    newEmployee.save(function (error) {
+
+        if (error) throw error;
+
+        console.log(firstName + lastName + " saved successfully!");
+
+    });
+
+    response.redirect("/");
+
+});
+
+app.get("/view/:firstName-:lastName", function (request, response) {
 
     var firstName = request.params.firstName;
     var lastName = request.params.lastName;
 
-    employee.Employee.find({'firstName': firstName, 'lastName': lastName}, function(error, employees) {
+    employee.Employee.find({ 'firstName': firstName, 'lastName': lastName }, function (error, employees) {
 
         if (error) throw error;
 
@@ -205,8 +205,5 @@ app.post("/process", function(request, response) {
 
 });
 
-http.createServer(app).listen(8080, function() {
-
-    console.log("Application started on port 8080!");
-
-});
+app.set("port", process.env.PORT || 8080);
+http.createServer(app).listen(app.get("port"), function () { console.log("Application started on port " + app.get("port")) });
